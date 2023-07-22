@@ -18,6 +18,16 @@ namespace PetClinic.Controllers
             return View();
         }
 
+        public IActionResult ForUs()
+        {
+            return View();
+        }
+        public IActionResult ImportantInformation()
+        {
+            return View();
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
