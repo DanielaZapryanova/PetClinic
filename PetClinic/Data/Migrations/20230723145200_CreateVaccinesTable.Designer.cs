@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetClinic.Data;
 
@@ -11,9 +12,10 @@ using PetClinic.Data;
 namespace PetClinic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230723145200_CreateVaccinesTable")]
+    partial class CreateVaccinesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,100 +226,6 @@ namespace PetClinic.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PetClinic.Data.Models.BloodTest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Results")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VisitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VisitId");
-
-                    b.ToTable("BloodTests");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Examination", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Conclusion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VisitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VisitId");
-
-                    b.ToTable("Examinations");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Grooming", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("GroomingTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VisitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroomingTypeId");
-
-                    b.HasIndex("VisitId");
-
-                    b.ToTable("Groomings");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.GroomingType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Breed")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroomingTypes");
-                });
-
             modelBuilder.Entity("PetClinic.Data.Models.Owner", b =>
                 {
                     b.Property<int>("Id")
@@ -392,29 +300,6 @@ namespace PetClinic.Data.Migrations
                     b.ToTable("Pets");
                 });
 
-            modelBuilder.Entity("PetClinic.Data.Models.Vaccination", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("VaccineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VisitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VaccineId");
-
-                    b.HasIndex("VisitId");
-
-                    b.ToTable("Vaccinations");
-                });
-
             modelBuilder.Entity("PetClinic.Data.Models.Vaccine", b =>
                 {
                     b.Property<int>("Id")
@@ -437,62 +322,6 @@ namespace PetClinic.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vaccines");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Vet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Specalization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telephone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vets");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Visit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PetId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("VetId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PetId");
-
-                    b.HasIndex("VetId");
-
-                    b.ToTable("Visits");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -546,47 +375,6 @@ namespace PetClinic.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PetClinic.Data.Models.BloodTest", b =>
-                {
-                    b.HasOne("PetClinic.Data.Models.Visit", "Visit")
-                        .WithMany()
-                        .HasForeignKey("VisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Visit");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Examination", b =>
-                {
-                    b.HasOne("PetClinic.Data.Models.Visit", "Visit")
-                        .WithMany()
-                        .HasForeignKey("VisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Visit");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Grooming", b =>
-                {
-                    b.HasOne("PetClinic.Data.Models.GroomingType", "GroomingType")
-                        .WithMany()
-                        .HasForeignKey("GroomingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PetClinic.Data.Models.Visit", "Visit")
-                        .WithMany()
-                        .HasForeignKey("VisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroomingType");
-
-                    b.Navigation("Visit");
-                });
-
             modelBuilder.Entity("PetClinic.Data.Models.Pet", b =>
                 {
                     b.HasOne("PetClinic.Data.Models.Owner", "Owner")
@@ -596,44 +384,6 @@ namespace PetClinic.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Vaccination", b =>
-                {
-                    b.HasOne("PetClinic.Data.Models.Vaccine", "Vaccine")
-                        .WithMany()
-                        .HasForeignKey("VaccineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PetClinic.Data.Models.Visit", "Visit")
-                        .WithMany()
-                        .HasForeignKey("VisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Vaccine");
-
-                    b.Navigation("Visit");
-                });
-
-            modelBuilder.Entity("PetClinic.Data.Models.Visit", b =>
-                {
-                    b.HasOne("PetClinic.Data.Models.Pet", "Pet")
-                        .WithMany()
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PetClinic.Data.Models.Vet", "Vet")
-                        .WithMany()
-                        .HasForeignKey("VetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pet");
-
-                    b.Navigation("Vet");
                 });
 #pragma warning restore 612, 618
         }
