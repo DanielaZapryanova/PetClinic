@@ -22,6 +22,12 @@ namespace PetClinic.Controllers
         {
             return View();
         }
+
+        public IActionResult Contacts()
+        {
+            return View();
+        }
+
         public IActionResult ImportantInformation()
         {
             return View();
