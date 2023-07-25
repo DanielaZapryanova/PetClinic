@@ -1,0 +1,23 @@
+﻿@model IEnumerable<VeterinarianViewModel>
+
+@{
+    ViewData["Title"] = "Всички ветеринари";
+}
+
+<div class="text-center row">
+    @foreach (var vet in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            @*<img class="card-img-top" style="width: 18rem;"
+                 src="@book.ImageUrl" alt="Book Image">*@
+            <div class="card-body">
+
+                <p class="mb-0">Име: @vet.FullName</p>
+                <p class="mb-0">Специалност: @vet.Specialization</p>
+            </div>
+
+            @*TODO: Make admin-only.*@
+            <a href="/Veterinarian/EditVeterinarian/@vet.Id" class="btn btn-warning">Редактирай</a>
+        </div>
+    }
+</div>

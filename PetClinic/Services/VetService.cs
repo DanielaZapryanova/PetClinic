@@ -52,6 +52,16 @@ namespace PetClinic.Services
             return true;
         }
 
+        public async Task<IList<VeterinarianViewModel>> GetAllVets()
+        {
+            return await dbContext.Vets.Select(vet => new VeterinarianViewModel
+            {
+                Id = vet.Id,
+                FullName = vet.FullName,
+                Specialization = vet.Specialization,
+            }).ToListAsync();
+        }
+
         public async Task<EditVeterinarianViewModel?> GetVet(int vetId)
         {
             return await dbContext.Vets

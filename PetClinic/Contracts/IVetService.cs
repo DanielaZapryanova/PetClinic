@@ -9,5 +9,7 @@ namespace PetClinic.Contracts
         Task<bool> EditVet(EditVeterinarianViewModel editVetViewModel);
 
         Task<EditVeterinarianViewModel?> GetVet(int vetId);
+
+        Task<IList<VeterinarianViewModel>> GetAllVets();
     }
 }

@@ -36,6 +36,13 @@ namespace PetClinic.Controllers
             return View(vet);
         }
 
+        public async Task<IActionResult> All()
+        {
+            IList<VeterinarianViewModel> vets = new List<VeterinarianViewModel>();
+            vets = await vetService.GetAllVets();
+            return View(vets);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddVeterinarian(AddVeterinarianViewModel addVetViewModel)
         {
