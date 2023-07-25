@@ -1,4 +1,5 @@
-﻿using PetClinic.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using PetClinic.Contracts;
 using PetClinic.Data;
 using PetClinic.Data.Models;
 using PetClinic.Models;
@@ -29,6 +30,40 @@ namespace PetClinic.Services
             {
                 return false;
             }
+        }
+
+        public async Task<bool> EditVet(EditVeterinarianViewModel editVetViewModel)
+        {
+            // Find vet by id
+            var vet = await dbContext.Vets.FirstOrDefaultAsync(vet => vet.Id == editVetViewModel.Id);
+
+            if (vet == null)
+            {
+                throw new InvalidOperationException($"Book with id: {editVetViewModel.Id} cannot be found.");
+            }
+
+            // Update vet properties
+            vet.FullName = editVetViewModel.FullName;
+            vet.Telephone = editVetViewModel.Telephone;
+            vet.Specialization = editVetViewModel.Specialization;
+
+            // Save changes in db
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<EditVeterinarianViewModel?> GetVet(int vetId)
+        {
+            return await dbContext.Vets
+                .Where(vet => vet.Id == vetId)
+                .Select(vet => new EditVeterinarianViewModel
+                {
+                    Id = vet.Id,
+                    FullName = vet.FullName,
+                    Telephone = vet.Telephone,
+                    Specialization = vet.Specialization
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }
