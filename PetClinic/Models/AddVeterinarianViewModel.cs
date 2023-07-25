@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PetClinic.Data.Models
+namespace PetClinic.Models
 {
-    public class Vet
+    public class AddVeterinarianViewModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(20)]
         public string? FullName { get; set; }
@@ -16,5 +13,7 @@ namespace PetClinic.Data.Models
 
         [Required]
         public string? Specialization { get; set; }
+
+        public List<SpecializationViewModel> Specializations { get; set; }
     }
 }

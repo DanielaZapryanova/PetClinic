@@ -62,10 +62,10 @@
     <Content Update="Views\Home\ImportantInformation.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Home\AddVeterinarian.cshtml">
+    <Content Update="Views\Veterinarian\AddVeterinarian.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Home\Veterinarian.cshtml">
+    <Content Update="Views\Shared\Veterinarian.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Home\Index.cshtml">
