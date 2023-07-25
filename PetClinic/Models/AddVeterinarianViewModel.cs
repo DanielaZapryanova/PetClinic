@@ -5,7 +5,7 @@ namespace PetClinic.Models
     public class AddVeterinarianViewModel
     {
         [Required]
-        [MaxLength(20)]
+        [MaxLength(40)]
         public string? FullName { get; set; }
 
         [Required]
@@ -14,6 +14,6 @@ namespace PetClinic.Models
         [Required]
         public string? Specialization { get; set; }
 
-        public List<SpecializationViewModel> Specializations { get; set; }
+        public List<SpecializationViewModel>? Specializations { get; set; }
     }
 }

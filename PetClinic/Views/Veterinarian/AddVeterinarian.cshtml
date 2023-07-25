@@ -21,7 +21,7 @@
             <select asp-for="@Model.Specialization" class="form-control">
                 @foreach (var category in @Model.Specializations)
                 {
-                    <option value="@category.SpecializationId">@category.Name</option>
+                    <option value="@category.Name">@category.Name</option>
                 }
             </select>
             <span asp-validation-for="@Model.Specialization" class="text-danger"></span>

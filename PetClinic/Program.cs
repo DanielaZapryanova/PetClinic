@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PetClinic.Contracts;
 using PetClinic.Data;
+using PetClinic.Services;
 
 namespace PetClinic
 {
@@ -19,6 +21,7 @@ namespace PetClinic
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IVetService, VetService>();
 
             var app = builder.Build();
 
