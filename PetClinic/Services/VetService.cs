@@ -39,7 +39,7 @@ namespace PetClinic.Services
 
             if (vet == null)
             {
-                throw new InvalidOperationException($"Book with id: {editVetViewModel.Id} cannot be found.");
+                throw new InvalidOperationException($"Veterinarian with id: {editVetViewModel.Id} cannot be found.");
             }
 
             // Update vet properties
@@ -75,5 +75,6 @@ namespace PetClinic.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
     }
 }

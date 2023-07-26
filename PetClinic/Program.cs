@@ -22,6 +22,8 @@ namespace PetClinic
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IVetService, VetService>();
+            builder.Services.AddScoped<IPetService, PetService>();
+
 
             var app = builder.Build();
 

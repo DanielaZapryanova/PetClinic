@@ -29,6 +29,9 @@
                             <a class="nav-link text-dark" asp-area="Нашият екип" asp-controller="Veterinarian" asp-action="All">Нашият екип</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Нашите животни" asp-controller="Pet" asp-action="All">Нашите животни</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Важна информация" asp-controller="Home" asp-action="ImportantInformation">Важна информация</a>
                         </li>
                         <li class="nav-item">
@@ -43,6 +46,9 @@
                         @*TODO: Make admin-only.*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Veterinarian" asp-action="AddVeterinarian">Добави ветеринар</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Pet" asp-action="AddPet">Добави животно</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
