@@ -23,6 +23,7 @@ namespace PetClinic
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IVetService, VetService>();
             builder.Services.AddScoped<IPetService, PetService>();
+            builder.Services.AddScoped<IOwnerService, OwnerService>();
 
 
             var app = builder.Build();

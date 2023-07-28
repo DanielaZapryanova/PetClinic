@@ -1,0 +1,28 @@
+﻿@model IEnumerable<OwnerViewModel>
+
+@{
+    ViewData["Title"] = "Всички собственици";
+}
+
+<div class="text-center row">
+    @foreach (var owner in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            @*<img class="card-img-top" style="width: 18rem;"
+                 src="@book.ImageUrl" alt="Book Image">*@
+            <div class="card-body">
+
+                <p class="mb-0">Име и Фамилия: @owner.FullName</p>
+                @*<p class="mb-0">Собсвеник: @pet.OwnerId</p>*@
+            </div>
+            <div class="card-body">
+
+                <p class="mb-0">Телефон: @owner.Telephone</p>
+                @*<p class="mb-0">Собсвеник: @pet.OwnerId</p>*@
+            </div>
+
+            @*TODO: Make admin-only.*@
+            <a href="/Owner/EditOwner/@owner.Id" class="btn btn-warning">Редактирай</a>
+        </div>
+    }
+</div>
