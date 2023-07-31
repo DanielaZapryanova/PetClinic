@@ -1,5 +1,4 @@
 ﻿using PetClinic.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetClinic.Models
@@ -28,5 +27,7 @@ namespace PetClinic.Models
 
         [Required]
         public int OwnerId { get; set; }
+
+        public IList<OwnerViewModel>? PossibleOwners { get; set; }
     }
 }

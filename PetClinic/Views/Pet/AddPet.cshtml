@@ -42,6 +42,16 @@
             <span asp-validation-for="@Model.Weight" class="text-danger"></span>
         </div>
         <div class="mb-3">
+            <label asp-for="@Model.PossibleOwners" class="form-label">Собственик</label>
+            <select asp-for="@Model.OwnerId" class="form-control">
+                @foreach (var possibleOwner in @Model.PossibleOwners)
+                {
+                    <option value="@possibleOwner.Id">@possibleOwner.FullName</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.PossibleOwners" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
             <input class="btn btn-primary" type="submit" value="Добави животно" />
         </div>
     </form>

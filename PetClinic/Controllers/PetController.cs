@@ -8,14 +8,19 @@ namespace PetClinic.Controllers
     public class PetController : Controller
     {
         IPetService petService;
+        IOwnerService ownerService;
 
-        public PetController(IPetService petService)
+        public PetController(IPetService petService, IOwnerService ownerService)
         {
             this.petService = petService;
+            this.ownerService = ownerService;
         }
-        public IActionResult AddPet()
+        public async Task<IActionResult> AddPet()
         {
             AddPetViewModel addPetViewModel = new AddPetViewModel();
+            IList<OwnerViewModel> possibleOwners = new List<OwnerViewModel>();
+            possibleOwners = await ownerService.GetAllOwners();
+            addPetViewModel.PossibleOwners = possibleOwners;
             return View (addPetViewModel);
         }
         public async Task<IActionResult> EditPet(int id)

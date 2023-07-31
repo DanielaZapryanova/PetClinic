@@ -23,6 +23,7 @@ namespace PetClinic.Services
             pet.Gender = addPetViewModel.Gender;
             pet.Color = addPetViewModel.Color;
             pet.Weight = addPetViewModel.Weight;
+            pet.OwnerId = addPetViewModel.OwnerId;
             try
             {
                 await dbContext.Pets.AddAsync(pet);
@@ -70,6 +71,7 @@ namespace PetClinic.Services
                 Weight = pet.Weight,
             }).ToListAsync();
         }
+
         public async Task<EditPetViewModel?> GetPet(int petId)
         {
             return await dbContext.Pets
