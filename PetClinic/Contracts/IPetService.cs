@@ -8,6 +8,8 @@ namespace PetClinic.Contracts
 
         Task<bool> EditPet(EditPetViewModel editPetViewModel);
 
+        Task<bool> DeletePet(int id);
+
         Task<EditPetViewModel?> GetPet(int petId);
 
         Task<IList<PetViewModel>> GetAllPets();

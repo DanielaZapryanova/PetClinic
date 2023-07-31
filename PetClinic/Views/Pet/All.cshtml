@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<PetViewModel>
 
+
 @{
     ViewData["Title"] = "Всички животни";
 }
@@ -11,13 +12,16 @@
             @*<img class="card-img-top" style="width: 18rem;"
                  src="@book.ImageUrl" alt="Book Image">*@
             <div class="card-body">
-
                 <p class="mb-0">Име: @pet.Name</p>
-                @*<p class="mb-0">Собсвеник: @pet.OwnerId</p>*@
+            </div>
+            <div class="card-body">
+
+                <p class="mb-0">Собсвеник: @pet.Owner.FullName</p>
             </div>
 
             @*TODO: Make admin-only.*@
             <a href="/Pet/EditPet/@pet.Id" class="btn btn-warning">Редактирай</a>
+            <a href="/Pet/DeletePet/@pet.Id" class="btn btn-warning">Изтрий</a>
         </div>
     }
 </div>

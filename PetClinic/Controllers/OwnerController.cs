@@ -2,6 +2,7 @@
 using PetClinic.Contracts;
 using PetClinic.Models;
 using PetClinic.Services;
+using System.Security.Policy;
 
 namespace PetClinic.Controllers
 {
@@ -41,7 +42,7 @@ namespace PetClinic.Controllers
 
             await ownerService.AddOwner(addOwnerViewModel);
 
-            return RedirectToAction(nameof(AddOwner));
+            return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
@@ -54,7 +55,7 @@ namespace PetClinic.Controllers
 
             await ownerService.EditOwner(editOwnerViewModel);
 
-            return RedirectToAction(nameof(AddOwner));
+            return RedirectToAction(nameof(All));
         }
     }
 }

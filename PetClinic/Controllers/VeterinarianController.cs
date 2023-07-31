@@ -54,7 +54,7 @@ namespace PetClinic.Controllers
 
             await vetService.AddVet(addVetViewModel);
 
-            return RedirectToAction(nameof(AddVeterinarian));
+            return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
@@ -68,7 +68,7 @@ namespace PetClinic.Controllers
 
             await vetService.EditVet(editVetViewModel);
 
-            return RedirectToAction(nameof(AddVeterinarian));
+            return RedirectToAction(nameof(All));
         }
 
         private List<SpecializationViewModel> GetVeterinarianSpecializations()

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetClinic.Contracts;
+using PetClinic.Data.Models;
 using PetClinic.Models;
 using PetClinic.Services;
 
@@ -21,12 +22,21 @@ namespace PetClinic.Controllers
             IList<OwnerViewModel> possibleOwners = new List<OwnerViewModel>();
             possibleOwners = await ownerService.GetAllOwners();
             addPetViewModel.PossibleOwners = possibleOwners;
-            return View (addPetViewModel);
+            return View(addPetViewModel);
         }
         public async Task<IActionResult> EditPet(int id)
         {
             var pet = await petService.GetPet(id);
+            IList<OwnerViewModel> possibleOwners = new List<OwnerViewModel>();
+            possibleOwners = await ownerService.GetAllOwners();
+            pet.PossibleOwners = possibleOwners;
             return View(pet);
+        }
+
+        public async Task<IActionResult> DeletePet(int id)
+        {
+            await petService.DeletePet(id);
+            return RedirectToAction(nameof(All));
         }
 
         public async Task<IActionResult> All()
@@ -46,7 +56,7 @@ namespace PetClinic.Controllers
 
             await petService.AddPet(addPetViewModel);
 
-            return RedirectToAction(nameof(AddPet));
+            return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
@@ -54,12 +64,18 @@ namespace PetClinic.Controllers
         {
             if (!ModelState.IsValid)
             {
+                editPetViewModel.PossibleOwners= await GetPetOwners();
                 return View(editPetViewModel);
             }
 
             await petService.EditPet(editPetViewModel);
 
-            return RedirectToAction(nameof(AddPet));
+            return RedirectToAction(nameof(All));
+        }
+
+        private async Task<IList<OwnerViewModel>> GetPetOwners()
+        {
+            return await ownerService.GetAllOwners();
         }
     }
 }

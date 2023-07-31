@@ -35,6 +35,7 @@ namespace PetClinic.Services
                 return false;
             }
         }
+
         public async Task<bool> EditPet(EditPetViewModel editPetViewModel)
         {
             // Find pet by id
@@ -45,6 +46,7 @@ namespace PetClinic.Services
                 throw new InvalidOperationException($"Pet with id: {editPetViewModel.Id} cannot be found.");
             }
 
+
             // Update pet properties
             pet.Name = editPetViewModel.Name;
             pet.DateOfBirth = editPetViewModel.DateOfBirth;
@@ -52,15 +54,29 @@ namespace PetClinic.Services
             pet.Gender = editPetViewModel.Gender;
             pet.Color = editPetViewModel.Color;
             pet.Weight = editPetViewModel.Weight;
-
+            pet.OwnerId = editPetViewModel.OwnerId;
             // Save changes in db
             await dbContext.SaveChangesAsync();
             return true;
         }
 
+        public async Task<bool> DeletePet(int id)
+        {
+            // Find pet by id
+            var pet = await dbContext.Pets.FirstOrDefaultAsync(pet => pet.Id == id);
+
+            if (pet != null)
+            {
+                dbContext.Pets.Remove(pet);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<IList<PetViewModel>> GetAllPets()
         {
-            return await dbContext.Pets.Select(pet => new PetViewModel
+            var pets = await dbContext.Pets.Select(pet => new PetViewModel
             {
                 Id = pet.Id,
                 Name = pet.Name,
@@ -69,7 +85,14 @@ namespace PetClinic.Services
                 Gender = pet.Gender,
                 Color = pet.Color,
                 Weight = pet.Weight,
+                OwnerId = pet.OwnerId,
             }).ToListAsync();
+            foreach (var pet in pets)
+            {
+                var owner = await dbContext.Owners.FirstOrDefaultAsync(owner => owner.Id == pet.OwnerId);
+                pet.Owner = owner;
+            }
+            return pets;
         }
 
         public async Task<EditPetViewModel?> GetPet(int petId)
@@ -85,6 +108,7 @@ namespace PetClinic.Services
                     Gender = pet.Gender,
                     Color = pet.Color,
                     Weight = pet.Weight,
+                    OwnerId = pet.OwnerId,
                 })
                 .FirstOrDefaultAsync();
         }
