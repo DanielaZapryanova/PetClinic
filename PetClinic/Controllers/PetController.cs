@@ -47,7 +47,7 @@ namespace PetClinic.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPet(AddPetViewModel addPetViewModel)
+        public async Task<IActionResult> AddPet([FromForm(Name = "file")] IFormFile? file, AddPetViewModel addPetViewModel)
         {
             if (!ModelState.IsValid)
             {

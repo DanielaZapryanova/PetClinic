@@ -25,6 +25,10 @@ namespace PetClinic.Models
         [Required]
         public decimal Weight { get; set; }
 
+        public string? Image { get; set; }
+
+        public string? ImagePath { get; set; }
+
         [Required]
         public int OwnerId { get; set; }
 

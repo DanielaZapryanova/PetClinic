@@ -29,6 +29,9 @@ namespace PetClinic.Models
         public decimal Weight { get; set; }
 
         [Required]
+        public string? Image { get; set; }
+
+        [Required]
         public int OwnerId { get; set; }
 
         [ForeignKey(nameof(OwnerId))]
