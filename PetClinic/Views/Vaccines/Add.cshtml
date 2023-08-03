@@ -1,0 +1,28 @@
+﻿@model AddVaccineViewModel
+
+@{
+    ViewData["Title"] = "Добави ваксина";
+}
+
+<div class="text-center">
+    <form asp-controller="Vaccines" asp-action="Add" method="post">
+        <div class="mb-3">
+            <label asp-for="@Model.Name" class="form-label">Име</label>
+            <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.NumberInStock" class="form-label">Наличност</label>
+            <input asp-for="@Model.NumberInStock" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.NumberInStock" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.DateOfExpiry" class="form-label">Срок на годност</label>
+            <input asp-for="@Model.DateOfExpiry" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.DateOfExpiry" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-primary" type="submit" value="Добави ваксина" />
+        </div>
+    </form>
+</div>

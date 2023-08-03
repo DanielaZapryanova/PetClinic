@@ -1,0 +1,29 @@
+﻿@model IEnumerable<VaccineViewModel>
+
+@{
+    ViewData["Title"] = "Всички ваксини";
+}
+
+<div class="text-center row">
+
+    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+            <button><a class="nav-link text-dark" asp-controller="Vaccines" asp-action="Add">Добави ваксина</a></button>
+        </ul>
+    </div>
+    <p>Ваксини</p>
+    @foreach (var vaccine in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <p class="mb-0">Име: @vaccine.Name</p>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">Наличност: @vaccine.NumberInStock</p>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">Срок на годност: @vaccine.DateOfExpiry</p>
+            </div>
+        </div>
+    }
+</div>
