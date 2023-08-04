@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetClinic.Contracts;
 using PetClinic.Models;
+using PetClinic.Services;
 
 namespace PetClinic.Controllers
 {
@@ -17,10 +18,11 @@ namespace PetClinic.Controllers
             this.vetService = vetService;
         }
 
-        //public async Task<IActionResult> GetAllVisits(int animalId)
-        //{
-
-        //}
+        public async Task<IActionResult> AllVisit()
+        {
+            IList<VisitViewModel> visits = await visitsService.AllVisit();
+            return View(visits);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddVisit(AddVisitViewModel addVisitViewModel)
@@ -32,7 +34,7 @@ namespace PetClinic.Controllers
 
             await visitsService.AddVisit(addVisitViewModel);
 
-            return RedirectToAction(nameof(AddVisit));
+            return RedirectToAction(nameof(AllVisit));
         }
 
         public async Task<IActionResult> AddVisit()

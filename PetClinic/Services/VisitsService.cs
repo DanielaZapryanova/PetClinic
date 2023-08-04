@@ -3,6 +3,7 @@ using PetClinic.Contracts;
 using PetClinic.Data;
 using PetClinic.Data.Models;
 using PetClinic.Models;
+using System.Drawing;
 
 namespace PetClinic.Services
 {
@@ -38,11 +39,25 @@ namespace PetClinic.Services
         public IList<ReasonViewModel> GetPossibleReasons()
         {
             IList<ReasonViewModel> reasons = new List<ReasonViewModel>();
-            foreach(Reason reason in Enum.GetValues(typeof(Reason)))
+            foreach (Reason reason in Enum.GetValues(typeof(Reason)))
             {
                 reasons.Add(new ReasonViewModel() { FriendlyName = Enum.GetName(typeof(Reason), reason), Reason = reason });
             }
             return reasons;
         }
+
+        public async Task<IList<VisitViewModel>> AllVisit()
+        {
+            var visits = await dbContext.Visits.Select(visit => new VisitViewModel
+            {
+                Id = visit.Id,
+                Date = visit.Date,
+                Price = visit.Price,
+                ReasonForVisit = visit.ReasonForVisit,
+            }).ToListAsync();
+           return visits;
+        }
+
+
     }
 }

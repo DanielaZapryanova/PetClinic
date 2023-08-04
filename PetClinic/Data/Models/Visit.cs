@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PetClinic.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetClinic.Data.Models
@@ -29,7 +30,7 @@ namespace PetClinic.Data.Models
         [Required]
         public Reason ReasonForVisit { get; set; }
     }
-
+    
     public enum Reason
     {
         Examinations,
