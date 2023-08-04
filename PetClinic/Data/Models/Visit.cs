@@ -25,6 +25,9 @@ namespace PetClinic.Data.Models
 
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
+        public Reason ReasonForVisit { get; set; }
     }
 
     public enum Reason

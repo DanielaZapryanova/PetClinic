@@ -24,6 +24,8 @@ namespace PetClinic
             builder.Services.AddScoped<IVetService, VetService>();
             builder.Services.AddScoped<IPetService, PetService>();
             builder.Services.AddScoped<IOwnerService, OwnerService>();
+            builder.Services.AddScoped<IVaccineService, VaccineService>();
+            builder.Services.AddScoped<IVisitsService, VisitsService>();
 
 
             var app = builder.Build();
