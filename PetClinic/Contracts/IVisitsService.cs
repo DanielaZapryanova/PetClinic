@@ -9,5 +9,7 @@ namespace PetClinic.Contracts
         Task<bool> AddVisit(AddVisitViewModel addVisitViewModel);
 
         Task<IList<VisitViewModel>> AllVisit();
+
+        Task<IList<VisitViewModel>> Visits(int id);
     }
 }

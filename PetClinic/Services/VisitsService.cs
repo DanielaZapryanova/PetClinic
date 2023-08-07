@@ -55,7 +55,21 @@ namespace PetClinic.Services
                 Price = visit.Price,
                 ReasonForVisit = visit.ReasonForVisit,
             }).ToListAsync();
-           return visits;
+            return visits;
+        }
+
+        public async Task<IList<VisitViewModel>> Visits(int id)
+        {
+            var visits = await dbContext.Visits
+            .Where(x => x.PetId == id)
+            .Select(visit => new VisitViewModel
+            {
+                Id = visit.Id,
+                Date = visit.Date,
+                Price = visit.Price,
+                ReasonForVisit = visit.ReasonForVisit,
+            }).ToListAsync();
+            return visits;
         }
 
 

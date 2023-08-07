@@ -1,0 +1,24 @@
+﻿@model IEnumerable<VisitViewModel>
+
+@{
+    ViewData["Title"] = "История на посещенията";
+}
+
+<div class="text-center row">
+
+    <p>Посещения</p>
+    @foreach (var visit in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <p class="mb-0">Дата на посещението: @visit.Date</p>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">Цена: @visit.Price</p>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">Причина: @visit.ReasonForVisit.ToFriendlyString()</p>
+            </div>
+        </div>
+    }
+</div>

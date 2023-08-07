@@ -23,6 +23,11 @@ namespace PetClinic.Controllers
             IList<VisitViewModel> visits = await visitsService.AllVisit();
             return View(visits);
         }
+        public async Task<IActionResult> Visits(int id)
+        {
+            IList<VisitViewModel> visits = await visitsService.Visits(id);
+            return View(visits);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddVisit(AddVisitViewModel addVisitViewModel)
