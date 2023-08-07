@@ -1,0 +1,53 @@
+﻿@model AddVaccinationViewModel
+
+@{
+    ViewData["Title"] = "Добави ваксинация";
+}
+
+<div class="text-center">
+    <form asp-controller="Visits" asp-action="AddVaccination" method="post">
+        <div class="mb-3">
+            <label asp-for="@Model.Date" class="form-label">Дата на посещение</label>
+            <input asp-for="@Model.Date" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.Date" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.PossiblePets" class="form-label">Животно</label>
+            <select asp-for="@Model.PetId" class="form-control">
+                @foreach (var possiblePet in @Model.PossiblePets)
+                {
+                    <option value="@possiblePet.Id">@possiblePet.Name</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.PossiblePets" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.PossibleVets" class="form-label">Ветеринар</label>
+            <select asp-for="@Model.VetId" class="form-control">
+                @foreach (var possibleVet in @Model.PossibleVets)
+                {
+                    <option value="@possibleVet.Id">@possibleVet.FullName</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.PossibleVets" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.Price" class="form-label">Цена</label>
+            <input asp-for="@Model.Price" type="number" step=".01" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.Price" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.PossibleVaccines" class="form-label">Ваксина</label>
+            <select asp-for="@Model.VaccineId" class="form-control">
+                @foreach (var possibleVaccine in @Model.PossibleVaccines)
+                {
+                    <option value="@possibleVaccine.Id">@possibleVaccine.Name</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.PossibleVaccines" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-primary" type="submit" value="Добави ваксина" />
+        </div>
+    </form>
+</div>

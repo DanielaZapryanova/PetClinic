@@ -41,9 +41,27 @@ namespace PetClinic.Services
             IList<ReasonViewModel> reasons = new List<ReasonViewModel>();
             foreach (Reason reason in Enum.GetValues(typeof(Reason)))
             {
-                reasons.Add(new ReasonViewModel() { FriendlyName = reason.ToFriendlyString(), Reason = reason });
+                if (reason != Reason.Vaccination)
+                {
+                    reasons.Add(new ReasonViewModel() { FriendlyName = reason.ToFriendlyString(), Reason = reason });
+                }
             }
             return reasons;
+        }
+
+        public async Task<IList<VaccineViewModel>> GetPossibleVaccines()
+        {
+            var vaccines = await dbContext.Vaccines
+            .Where(vaccine => vaccine.ExpirationTime > DateTime.UtcNow)
+            .Where(vaccine => vaccine.NumberInStock > 0)
+            .Select(vaccine => new VaccineViewModel
+            {
+                Id = vaccine.Id,
+                Name = vaccine.Name,
+                DateOfExpiry = vaccine.ExpirationTime,
+                NumberInStock = vaccine.NumberInStock,
+            }).ToListAsync();
+            return vaccines;
         }
 
         public async Task<IList<VisitViewModel>> AllVisit()
@@ -72,6 +90,39 @@ namespace PetClinic.Services
             return visits;
         }
 
+        public async Task<bool> AddVaccination(AddVaccinationViewModel addVaccinationViewModel)
+        {
+            Visit visit = new Visit();
+            visit.Date = addVaccinationViewModel.Date;
+            visit.PetId = addVaccinationViewModel.PetId;
+            visit.VetId = addVaccinationViewModel.VetId;
+            visit.Price = addVaccinationViewModel.Price;
+            visit.ReasonForVisit = Reason.Vaccination;
+            try
+            {
+                await dbContext.Visits.AddAsync(visit);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
 
+            Vaccination vaccination = new Vaccination();
+            vaccination.VisitId = visit.Id;
+            vaccination.VaccineId = addVaccinationViewModel.VaccineId;
+            try
+            {
+                var vaccine = await dbContext.Vaccines.Where(vaccine => vaccine.Id == vaccination.VaccineId).FirstOrDefaultAsync();
+                vaccine.NumberInStock--;
+                await dbContext.Vaccinations.AddAsync(vaccination);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

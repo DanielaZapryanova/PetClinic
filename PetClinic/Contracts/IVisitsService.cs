@@ -6,7 +6,11 @@ namespace PetClinic.Contracts
     {
         IList<ReasonViewModel> GetPossibleReasons();
 
+        Task<IList<VaccineViewModel>> GetPossibleVaccines();
+
         Task<bool> AddVisit(AddVisitViewModel addVisitViewModel);
+
+        Task<bool> AddVaccination(AddVaccinationViewModel addVaccinationViewModel);
 
         Task<IList<VisitViewModel>> AllVisit();
 

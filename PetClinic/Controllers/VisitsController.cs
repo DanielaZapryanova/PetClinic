@@ -50,5 +50,27 @@ namespace PetClinic.Controllers
             addVisitViewModel.PossiblePets = await petService.GetAllPets();
             return View(addVisitViewModel);
         }
+
+        public async Task<IActionResult> AddVaccination()
+        {
+            AddVaccinationViewModel addVaccinationViewModel = new AddVaccinationViewModel();
+            addVaccinationViewModel.PossibleVaccines = await visitsService.GetPossibleVaccines();
+            addVaccinationViewModel.PossibleVets = await vetService.GetAllVets();
+            addVaccinationViewModel.PossiblePets = await petService.GetAllPets();
+            return View(addVaccinationViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddVaccination(AddVaccinationViewModel addVaccinationViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(addVaccinationViewModel);
+            }
+
+            await visitsService.AddVaccination(addVaccinationViewModel);
+
+            return RedirectToAction(nameof(AllVisit));
+        }
     }
 }
