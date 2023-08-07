@@ -41,7 +41,7 @@ namespace PetClinic.Services
             IList<ReasonViewModel> reasons = new List<ReasonViewModel>();
             foreach (Reason reason in Enum.GetValues(typeof(Reason)))
             {
-                reasons.Add(new ReasonViewModel() { FriendlyName = Enum.GetName(typeof(Reason), reason), Reason = reason });
+                reasons.Add(new ReasonViewModel() { FriendlyName = reason.ToFriendlyString(), Reason = reason });
             }
             return reasons;
         }
