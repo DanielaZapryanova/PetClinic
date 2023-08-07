@@ -9,5 +9,7 @@ namespace PetClinic.Models
         public string? FullName { get; set; }
 
         public string? Specialization { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace PetClinic.Controllers
         {
             AddVisitViewModel addVisitViewModel = new AddVisitViewModel();
             addVisitViewModel.PossibleReasons = visitsService.GetPossibleReasons();
-            addVisitViewModel.PossibleVets = await vetService.GetAllVets();
+            addVisitViewModel.PossibleVets = await vetService.GetAllActiveVets();
             addVisitViewModel.PossiblePets = await petService.GetAllPets();
             return View(addVisitViewModel);
         }
@@ -55,7 +55,7 @@ namespace PetClinic.Controllers
         {
             AddVaccinationViewModel addVaccinationViewModel = new AddVaccinationViewModel();
             addVaccinationViewModel.PossibleVaccines = await visitsService.GetPossibleVaccines();
-            addVaccinationViewModel.PossibleVets = await vetService.GetAllVets();
+            addVaccinationViewModel.PossibleVets = await vetService.GetAllActiveVets();
             addVaccinationViewModel.PossiblePets = await petService.GetAllPets();
             return View(addVaccinationViewModel);
         }

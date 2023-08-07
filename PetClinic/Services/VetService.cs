@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PetClinic.Contracts;
 using PetClinic.Data;
 using PetClinic.Data.Models;
@@ -54,7 +55,21 @@ namespace PetClinic.Services
 
         public async Task<IList<VeterinarianViewModel>> GetAllVets()
         {
-            return await dbContext.Vets.Select(vet => new VeterinarianViewModel
+            return await dbContext.Vets
+            .Select(vet => new VeterinarianViewModel
+            {
+                Id = vet.Id,
+                FullName = vet.FullName,
+                Specialization = vet.Specialization,
+                IsActive = vet.IsActive,
+            }).ToListAsync();
+        }
+
+        public async Task<IList<VeterinarianViewModel>> GetAllActiveVets()
+        {
+            return await dbContext.Vets
+            .Where(vet => vet.IsActive)
+            .Select(vet => new VeterinarianViewModel
             {
                 Id = vet.Id,
                 FullName = vet.FullName,
@@ -76,5 +91,54 @@ namespace PetClinic.Services
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<bool> MakeVeterinarianInactive(int vetId)
+        {
+            // Find vet by id
+            var vet = await dbContext.Vets.FirstOrDefaultAsync(vet => vet.Id == vetId);
+
+            if (vet == null)
+            {
+                throw new InvalidOperationException($"Veterinarian with id: {vetId} cannot be found.");
+            }
+
+            try
+            {
+                vet.IsActive = false;
+
+                // Save changes in db
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+     
+
+        public async Task<bool> MakeVeterinarianActive(int id)
+        {
+            // Find vet by id
+            var vet = await dbContext.Vets.FirstOrDefaultAsync(vet => vet.Id == id);
+
+            if (vet == null)
+            {
+                throw new InvalidOperationException($"Veterinarian with id: {id} cannot be found.");
+            }
+
+            try
+            {
+                vet.IsActive = true;
+
+                // Save changes in db
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

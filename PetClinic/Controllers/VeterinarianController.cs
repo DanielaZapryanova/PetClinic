@@ -84,5 +84,17 @@ namespace PetClinic.Controllers
             }
             return specializations;
         }
+
+        public async Task<IActionResult> MakeVeterinarianInactive(int id)
+        {
+            await vetService.MakeVeterinarianInactive(id);
+            return RedirectToAction(nameof(All));
+        }
+
+        public async Task<IActionResult> MakeVeterinarianActive(int id)
+        {
+            await vetService.MakeVeterinarianActive(id);
+            return RedirectToAction(nameof(All));
+        }
     }
 }

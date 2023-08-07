@@ -1,4 +1,5 @@
-﻿using PetClinic.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using PetClinic.Models;
 
 namespace PetClinic.Contracts
 {
@@ -10,6 +11,12 @@ namespace PetClinic.Contracts
 
         Task<EditVeterinarianViewModel?> GetVet(int vetId);
 
+        Task<bool> MakeVeterinarianInactive(int vetId);
+
         Task<IList<VeterinarianViewModel>> GetAllVets();
+
+        Task<IList<VeterinarianViewModel>> GetAllActiveVets();
+
+        Task<bool> MakeVeterinarianActive(int id);
     }
 }

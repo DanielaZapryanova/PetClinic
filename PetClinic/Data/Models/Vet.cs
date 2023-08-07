@@ -16,5 +16,7 @@ namespace PetClinic.Data.Models
 
         [Required]
         public string? Specialization { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

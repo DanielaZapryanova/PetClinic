@@ -18,6 +18,14 @@
 
             @*TODO: Make admin-only.*@
             <a href="/Veterinarian/EditVeterinarian/@vet.Id" class="btn btn-warning">Редактирай</a>
+            @if (vet.IsActive.Value)
+            {
+                <a href="/Veterinarian/MakeVeterinarianInactive/@vet.Id" class="btn btn-warning">Направи неактивен</a>
+            }
+            else
+            {
+                <a href="/Veterinarian/MakeVeterinarianActive/@vet.Id" class="btn btn-warning">Направи активен</a>
+            }
         </div>
     }
 </div>
