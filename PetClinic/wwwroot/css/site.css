@@ -15,5 +15,9 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #AFEEEE;
+    background-color: #FFFFF0;
+}
+
+.navigationbar {
+    background-color: #8FDCD3;
 }
