@@ -3,6 +3,7 @@ using PetClinic.Data;
 using PetClinic.Models;
 using PetClinic.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace PetClinic.Services
 {
@@ -67,6 +68,19 @@ namespace PetClinic.Services
 
             if (pet != null)
             {
+                var petVisits = await dbContext.Visits.Where(visit => visit.PetId == pet.Id).ToListAsync();
+
+                // We need to remove all visits also - both simple visit and vaccination.
+                foreach(var visit in petVisits)
+                {
+                    var vaccination = await dbContext.Vaccinations.Where(vaccination => vaccination.VisitId == visit.Id).FirstOrDefaultAsync();
+                    if (vaccination != null)
+                    {
+                        dbContext.Vaccinations.Remove(vaccination);
+                    }
+
+                    dbContext.Visits.Remove(visit);
+                }
                 dbContext.Pets.Remove(pet);
                 await dbContext.SaveChangesAsync();
                 return true;

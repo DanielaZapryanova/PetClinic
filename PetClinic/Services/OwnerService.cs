@@ -9,9 +9,12 @@ namespace PetClinic.Services
     public class OwnerService : IOwnerService
     {
         private ApplicationDbContext dbContext;
-        public OwnerService(ApplicationDbContext dbContext)
+        private readonly IPetService petService;
+
+        public OwnerService(ApplicationDbContext dbContext, IPetService petService)
         {
             this.dbContext = dbContext;
+            this.petService = petService;
         }
 
         public async Task<bool> AddOwner(AddOwnerViewModel addOwnerViewModel)
@@ -33,6 +36,7 @@ namespace PetClinic.Services
                 return false;
             }
         }
+
         public async Task<bool> EditOwner(EditOwnerViewModel editOwnerViewModel)
         {
             // Find pet by id
@@ -78,6 +82,41 @@ namespace PetClinic.Services
                     Telephone = owner.Telephone,
                 })
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> DeleteOwner(int id)
+        {
+            // Find owner by id
+            var ownerFound = await dbContext.Owners.FirstOrDefaultAsync(owner => owner.Id == id);
+
+            if (ownerFound != null)
+            {
+                var petsOfOwner = await dbContext.Pets.Where(pet => pet.OwnerId == id).ToListAsync();
+
+                // Remove owner of animal
+                foreach (var pet in petsOfOwner)
+                {
+                    try
+                    {
+                        await this.petService.DeletePet(pet.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                try
+                {
+                    dbContext.Owners.Remove(ownerFound);
+                    await dbContext.SaveChangesAsync();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

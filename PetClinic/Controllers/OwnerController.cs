@@ -57,5 +57,11 @@ namespace PetClinic.Controllers
 
             return RedirectToAction(nameof(All));
         }
+
+        public async Task<IActionResult> DeleteOwner(int id)
+        {
+            await ownerService.DeleteOwner(id);
+            return RedirectToAction(nameof(All));
+        }
     }
 }

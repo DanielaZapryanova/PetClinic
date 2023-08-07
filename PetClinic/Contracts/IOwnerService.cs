@@ -11,5 +11,7 @@ namespace PetClinic.Contracts
         Task<EditOwnerViewModel?> GetOwner(int ownerId);
 
         Task<IList<OwnerViewModel>> GetAllOwners();
+
+        Task<bool> DeleteOwner(int id);
     }
 }
