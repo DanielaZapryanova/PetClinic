@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -46,18 +51,21 @@
                             <a class="nav-link text-dark" asp-area="Контакти" asp-controller="Home" asp-action="Contacts">Контакти</a>
                         </li>
                         @*TODO: Make admin-only.*@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Veterinarian" asp-action="AddVeterinarian">Добави ветеринар</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Pet" asp-action="AddPet">Добави животно</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Owner" asp-action="AddOwner">Добави собственик</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Vaccines" asp-action="All">Ваксини</a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Veterinarian" asp-action="AddVeterinarian">Добави ветеринар</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Pet" asp-action="AddPet">Добави животно</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Owner" asp-action="AddOwner">Добави собственик</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Vaccines" asp-action="All">Ваксини</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Visits" asp-action="AllVisit">Посещения</a>
                         </li>
