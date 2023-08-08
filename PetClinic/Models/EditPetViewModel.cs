@@ -28,7 +28,6 @@ namespace PetClinic.Models
         [Required]
         public decimal Weight { get; set; }
 
-        [Required]
         public string? Image { get; set; }
 
         [Required]

@@ -1,4 +1,9 @@
-﻿@model IEnumerable<OwnerViewModel>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<OwnerViewModel>
 
 @{
     ViewData["Title"] = "Всички собственици";
@@ -9,7 +14,7 @@
     {
         <div class="card col-4" style="width: 20rem; ">
             @*<img class="card-img-top" style="width: 18rem;"
-                 src="@book.ImageUrl" alt="Book Image">*@
+        src="@book.ImageUrl" alt="Book Image">*@
             <div class="card-body">
 
                 <p class="mb-0">Име и Фамилия: @owner.FullName</p>
@@ -21,9 +26,12 @@
                 @*<p class="mb-0">Собсвеник: @pet.OwnerId</p>*@
             </div>
 
-            @*TODO: Make admin-only.*@
-            <a href="/Owner/EditOwner/@owner.Id" class="btn btn-warning">Редактирай</a>
-            <a href="/Owner/DeleteOwner/@owner.Id" class="btn btn-warning">Премахни</a>
+            @*Admin-only.*@
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="/Owner/EditOwner/@owner.Id" class="btn btn-warning">Редактирай</a>
+                <a href="/Owner/DeleteOwner/@owner.Id" class="btn btn-warning">Премахни</a>
+            }
         </div>
     }
 </div>

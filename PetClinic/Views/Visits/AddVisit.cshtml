@@ -1,4 +1,9 @@
-﻿@model AddVisitViewModel
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model AddVisitViewModel
 
 @{
     ViewData["Title"] = "Добави посещение";
@@ -47,7 +52,10 @@
             <span asp-validation-for="@Model.PossibleReasons" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Добави посещение" />
+              @if (User.IsInRole("Admin") || User.IsInRole("Vet"))
+            {
+                <input class="btn btn-primary" type="submit" value="Добави посещение" />
+            }
         </div>
     </form>
 </div>

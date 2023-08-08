@@ -23,6 +23,33 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Vet"))
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Veterinarian" asp-action="AddVeterinarian">Добави ветеринар</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Pet" asp-action="AddPet">Добави животно</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Owner" asp-action="AddOwner">Добави собственик</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Vaccines" asp-action="All">Ваксини</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Нашите собственици" asp-controller="Owner" asp-action="All">Нашите собственици</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Visits" asp-action="AllVisit">Посещения</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Нашите животни" asp-controller="Pet" asp-action="All">Нашите животни</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Начало" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
@@ -33,41 +60,16 @@
                             <a class="nav-link text-dark" asp-area="Нашият екип" asp-controller="Veterinarian" asp-action="All">Нашият екип</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Нашите животни" asp-controller="Pet" asp-action="All">Нашите животни</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Нашите собственици" asp-controller="Owner" asp-action="All">Нашите собственици</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Важна информация" asp-controller="Home" asp-action="ImportantInformation">Важна информация</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Ценоразпис" asp-controller="Home" asp-action="Index">Ценоразпис</a>
+                            <a class="nav-link text-dark" asp-area="Ценоразпис" asp-controller="Home" asp-action="PriceList">Ценоразпис</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Домашни посещения" asp-controller="Home" asp-action="HomeVisits">Домашни посещения</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Контакти" asp-controller="Home" asp-action="Contacts">Контакти</a>
-                        </li>
-                        @*TODO: Make admin-only.*@
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Veterinarian" asp-action="AddVeterinarian">Добави ветеринар</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Pet" asp-action="AddPet">Добави животно</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Owner" asp-action="AddOwner">Добави собственик</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Vaccines" asp-action="All">Ваксини</a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Visits" asp-action="AllVisit">Посещения</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

@@ -1,4 +1,9 @@
-﻿@model EditVeterinarianViewModel
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model EditVeterinarianViewModel
 
 @{
     ViewData["Title"] = "Редактирай ветеринар";
@@ -27,7 +32,10 @@
             <span asp-validation-for="@Model.Specialization" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Редактирай ветеринар" />
+             @if (User.IsInRole("Admin"))
+             {
+                <input class="btn btn-primary" type="submit" value="Редактирай ветеринар" />
+             }
         </div>
     </form>
 </div>

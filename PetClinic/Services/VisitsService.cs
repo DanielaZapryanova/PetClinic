@@ -71,6 +71,8 @@ namespace PetClinic.Services
                 Id = visit.Id,
                 Date = visit.Date,
                 Price = visit.Price,
+                Veterinarian = visit.Vet.FullName,
+                Pet = visit.Pet.Name,
                 ReasonForVisit = visit.ReasonForVisit,
             }).ToListAsync();
             return visits;
@@ -85,6 +87,8 @@ namespace PetClinic.Services
                 Id = visit.Id,
                 Date = visit.Date,
                 Price = visit.Price,
+                Veterinarian = visit.Vet.FullName,
+                Pet = visit.Pet.Name,
                 ReasonForVisit = visit.ReasonForVisit,
             }).ToListAsync();
             return visits;

@@ -10,6 +10,10 @@ namespace PetClinic.Models
 
         public decimal Price { get; set; }
 
+        public string Veterinarian { get; set; }
+
+        public string Pet { get; set; }
+
         public Reason ReasonForVisit { get; set; }
 
         public IList<ReasonViewModel>? PossibleReasons { get; set; }

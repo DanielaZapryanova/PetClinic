@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PetClinic.Contracts;
 using PetClinic.Data;
+using PetClinic.Data.Models;
 using PetClinic.Services;
 
 namespace PetClinic
@@ -58,7 +59,7 @@ namespace PetClinic
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            using(var scope = app.Services.CreateScope())
+            using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -66,7 +67,7 @@ namespace PetClinic
 
                 foreach (var role in roles)
                 {
-                    if(!await roleManager.RoleExistsAsync(role))
+                    if (!await roleManager.RoleExistsAsync(role))
                     {
                         await roleManager.CreateAsync(new IdentityRole(role));
                     }
@@ -79,7 +80,6 @@ namespace PetClinic
                 string email = "admin@admin.com";
                 string password = "Secret123,";
 
-
                 if (await userManager.FindByEmailAsync("admin@admin.com") == null)
                 {
                     var user = new IdentityUser();
@@ -87,6 +87,22 @@ namespace PetClinic
                     user.Email = email;
                     await userManager.CreateAsync(user, password);
                     await userManager.AddToRoleAsync(user, "Admin");
+                }
+               
+                
+            }
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                string email = "vet1@vet.com";
+                string password = "Secret123!";
+                if (await userManager.FindByEmailAsync("vet1@vet.com") == null)
+                {
+                    var user = new IdentityUser();
+                    user.UserName = email;
+                    user.Email = email;
+                    await userManager.CreateAsync(user, password);
+                    await userManager.AddToRoleAsync(user, "Vet");
                 }
             }
 

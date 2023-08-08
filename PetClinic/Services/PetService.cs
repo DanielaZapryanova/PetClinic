@@ -17,6 +17,7 @@ namespace PetClinic.Services
 
         public async Task<bool> AddPet(AddPetViewModel addPetViewModel)
         {
+            return false;
             Pet pet = new Pet();
             pet.Name = addPetViewModel.Name;
             pet.DateOfBirth = addPetViewModel.DateOfBirth;
@@ -39,6 +40,7 @@ namespace PetClinic.Services
 
         public async Task<bool> EditPet(EditPetViewModel editPetViewModel)
         {
+            return false;
             // Find pet by id
             var pet = await dbContext.Pets.FirstOrDefaultAsync(pet => pet.Id == editPetViewModel.Id);
 
@@ -63,6 +65,7 @@ namespace PetClinic.Services
 
         public async Task<bool> DeletePet(int id)
         {
+            return false;
             // Find pet by id
             var pet = await dbContext.Pets.FirstOrDefaultAsync(pet => pet.Id == id);
 

@@ -1,4 +1,9 @@
-﻿@model IEnumerable<PetViewModel>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<PetViewModel>
 
 
 @{
@@ -13,19 +18,22 @@
         src="@book.ImageUrl" alt="Book Image">*@
             <div class="card-body">
 
-               <img src="~/Resources/Dog4.jpg" style="width: 100px">
+                <img src="~/Resources/Dog4.jpg" style="width: 100px">
 
                 <p class="mb-0">Име: @pet.Name</p>
             </div>
             <div class="card-body">
 
-                <p class="mb-0">Собсвеник: @pet.Owner.FullName</p>
+                <p class="mb-0">Собственик: @pet.Owner.FullName</p>
             </div>
 
             @*TODO: Make admin-only.*@
-            <a href="/Pet/EditPet/@pet.Id" class="btn btn-warning">Редактирай</a>
-            <a href="/Pet/DeletePet/@pet.Id" class="btn btn-warning">Изтрий</a>
-            <a href="/Visits/Visits/@pet.Id" class="btn btn-warning">История на посещенията</a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Vet"))
+            {
+                <a href="/Pet/EditPet/@pet.Id" class="btn btn-warning">Редактирай</a>
+                <a href="/Pet/DeletePet/@pet.Id" class="btn btn-warning">Изтрий</a>
+                <a href="/Visits/Visits/@pet.Id" class="btn btn-warning">История на посещенията</a>
+            }
         </div>
     }
 </div>

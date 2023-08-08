@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetClinic.Contracts;
 using PetClinic.Data.Models;
 using PetClinic.Models;
 using PetClinic.Services;
+using System.Data;
 
 namespace PetClinic.Controllers
 {
@@ -16,29 +18,43 @@ namespace PetClinic.Controllers
             this.petService = petService;
             this.ownerService = ownerService;
         }
+
+        [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> AddPet()
         {
             AddPetViewModel addPetViewModel = new AddPetViewModel();
             IList<OwnerViewModel> possibleOwners = new List<OwnerViewModel>();
             possibleOwners = await ownerService.GetAllOwners();
             addPetViewModel.PossibleOwners = possibleOwners;
+            addPetViewModel.DateOfBirth = DateTime.Today;
             return View(addPetViewModel);
         }
+
+        [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> EditPet(int id)
         {
             var pet = await petService.GetPet(id);
             IList<OwnerViewModel> possibleOwners = new List<OwnerViewModel>();
             possibleOwners = await ownerService.GetAllOwners();
             pet.PossibleOwners = possibleOwners;
+            pet.DateOfBirth = DateTime.Today;
             return View(pet);
         }
 
+        [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> DeletePet(int id)
         {
-            await petService.DeletePet(id);
-            return RedirectToAction(nameof(All));
+            bool deletedPetSuccessfully = await petService.DeletePet(id);
+
+            if (deletedPetSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return View("Error");
         }
 
+        [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> All()
         {
             IList<PetViewModel> pets = new List<PetViewModel>();
@@ -47,6 +63,7 @@ namespace PetClinic.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> AddPet([FromForm(Name = "file")] IFormFile? file, AddPetViewModel addPetViewModel)
         {
             if (!ModelState.IsValid)
@@ -54,12 +71,18 @@ namespace PetClinic.Controllers
                 return View(addPetViewModel);
             }
 
-            await petService.AddPet(addPetViewModel);
+            bool addedPetSuccessfully = await petService.AddPet(addPetViewModel);
 
-            return RedirectToAction(nameof(All));
+            if (addedPetSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return View("Error");
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> EditPet(EditPetViewModel editPetViewModel)
         {
             if (!ModelState.IsValid)
@@ -68,11 +91,17 @@ namespace PetClinic.Controllers
                 return View(editPetViewModel);
             }
 
-            await petService.EditPet(editPetViewModel);
+            bool editedPetSuccessfully = await petService.EditPet(editPetViewModel);
 
-            return RedirectToAction(nameof(All));
+            if (editedPetSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return View("Error");
         }
 
+        [Authorize(Roles = "Admin,Vet")]
         private async Task<IList<OwnerViewModel>> GetPetOwners()
         {
             return await ownerService.GetAllOwners();

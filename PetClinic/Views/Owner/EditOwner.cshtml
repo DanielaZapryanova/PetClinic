@@ -1,4 +1,9 @@
-﻿@model EditOwnerViewModel
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model EditOwnerViewModel
 
 @{
     ViewData["Title"] = "Редактирай собственик";
@@ -22,12 +27,15 @@
             <span asp-validation-for="@Model.Age" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="@Model.Telephone" class="form-label">тТелефон</label>
+            <label asp-for="@Model.Telephone" class="form-label">Телефон</label>
             <input asp-for="@Model.Telephone" class="form-control" aria-required="true" />
             <span asp-validation-for="@Model.Telephone" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Редактирай собственик" />
+            @if (User.IsInRole("Admin") || User.IsInRole("Vet"))
+            {
+                <input class="btn btn-primary" type="submit" value="Редактирай собственик" />
+            }
         </div>
     </form>
 </div>

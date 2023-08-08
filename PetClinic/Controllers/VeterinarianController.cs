@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetClinic.Contracts;
 using PetClinic.Models;
+using PetClinic.Services;
+using System.Data;
 
 namespace PetClinic.Controllers
 {
@@ -13,6 +16,7 @@ namespace PetClinic.Controllers
             this.vetService = vetService;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AddVeterinarian()
         {
             AddVeterinarianViewModel addVeterinarianViewModel = new AddVeterinarianViewModel();
@@ -29,6 +33,7 @@ namespace PetClinic.Controllers
             return View(addVeterinarianViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditVeterinarian(int id)
         {
             var vet = await vetService.GetVet(id);
@@ -36,6 +41,7 @@ namespace PetClinic.Controllers
             return View(vet);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> All()
         {
             IList<VeterinarianViewModel> vets = new List<VeterinarianViewModel>();
@@ -44,6 +50,7 @@ namespace PetClinic.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddVeterinarian(AddVeterinarianViewModel addVetViewModel)
         {
             if (!ModelState.IsValid)
@@ -51,13 +58,18 @@ namespace PetClinic.Controllers
                 addVetViewModel.Specializations = GetVeterinarianSpecializations();
                 return View(addVetViewModel);
             }
+            bool addedVeterinarianSuccessfully = await vetService.AddVet(addVetViewModel);
 
-            await vetService.AddVet(addVetViewModel);
+            if (addedVeterinarianSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
 
-            return RedirectToAction(nameof(All));
+            return View("Error");
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditVeterinarian(EditVeterinarianViewModel editVetViewModel)
         {
             if (!ModelState.IsValid)
@@ -66,11 +78,17 @@ namespace PetClinic.Controllers
                 return View(editVetViewModel);
             }
 
-            await vetService.EditVet(editVetViewModel);
+            bool editVeterinarianSuccessfully = await vetService.EditVet(editVetViewModel);
 
-            return RedirectToAction(nameof(All));
+            if (editVeterinarianSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return View("Error");
         }
 
+        [Authorize(Roles = "Admin")]
         private List<SpecializationViewModel> GetVeterinarianSpecializations()
         {
             List<SpecializationViewModel> specializations = new List<SpecializationViewModel>();
@@ -85,16 +103,30 @@ namespace PetClinic.Controllers
             return specializations;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> MakeVeterinarianInactive(int id)
         {
-            await vetService.MakeVeterinarianInactive(id);
-            return RedirectToAction(nameof(All));
+            bool makeVeterinarianInactiveSuccessfully = await vetService.MakeVeterinarianInactive(id);
+
+            if (makeVeterinarianInactiveSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return View("Error");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> MakeVeterinarianActive(int id)
         {
-            await vetService.MakeVeterinarianActive(id);
-            return RedirectToAction(nameof(All));
+            bool makeVeterinarianActiveSuccessfully = await vetService.MakeVeterinarianActive(id);
+
+            if (makeVeterinarianActiveSuccessfully)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return View("Error");
         }
     }
 }
