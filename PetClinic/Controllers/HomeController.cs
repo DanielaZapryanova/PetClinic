@@ -15,36 +15,36 @@ namespace PetClinic.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
         public IActionResult ForUs()
         {
-            return View();
+            return View("ForUs");
         }
 
         public IActionResult Contacts()
         {
-            return View();
+            return View("Contacts");
         }
 
         public IActionResult ImportantInformation()
         {
-            return View();
+            return View("ImportantInformation");
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return View("Privacy");
         }
 
         public IActionResult HomeVisits()
         {
-            return View();
+            return View("HomeVisits");
         }
         public IActionResult PriceList()
         {
-            return View();
+            return View("PriceList");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

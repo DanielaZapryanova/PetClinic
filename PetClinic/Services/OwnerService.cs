@@ -39,7 +39,7 @@ namespace PetClinic.Services
 
         public async Task<bool> EditOwner(EditOwnerViewModel editOwnerViewModel)
         {
-            // Find pet by id
+            // Find owner by id
             var owner = await dbContext.Owners.FirstOrDefaultAsync(owner => owner.Id == editOwnerViewModel.Id);
 
             if (owner == null)
@@ -47,7 +47,7 @@ namespace PetClinic.Services
                 throw new InvalidOperationException($"Owner with id: {editOwnerViewModel.Id} cannot be found.");
             }
 
-            // Update pet properties
+            // Update owner properties
             owner.FullName = editOwnerViewModel.FullName;
             owner.Address = editOwnerViewModel.Address;
             owner.Age = editOwnerViewModel.Age;

@@ -38,6 +38,11 @@ namespace PetClinic.Controllers
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> AddVisit(AddVisitViewModel addVisitViewModel)
         {
+            if ((addVisitViewModel.Date - DateTime.Now).TotalDays > 3)
+            {
+                ModelState.AddModelError(nameof(addVisitViewModel.Date), "Не може да добавите посещение, случило се преди повече от 3 дни.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(addVisitViewModel);
@@ -84,9 +89,9 @@ namespace PetClinic.Controllers
                 ModelState.AddModelError(nameof(addVaccinationViewModel.Date), "Не може да ваксинирате в бъдещето.");
             }
 
-            if ((addVaccinationViewModel.Date - DateTime.Now).TotalDays > 30)
+            if ((addVaccinationViewModel.Date - DateTime.Now).TotalDays > 3)
             {
-                ModelState.AddModelError(nameof(addVaccinationViewModel.Date), "Не може да добавите ваксина, случила се преди повече от 30 дни.");
+                ModelState.AddModelError(nameof(addVaccinationViewModel.Date), "Не може да добавите ваксинация, случила се преди повече от 3 дни.");
             }
 
             if (!ModelState.IsValid)

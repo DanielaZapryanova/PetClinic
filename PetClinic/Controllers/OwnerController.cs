@@ -21,14 +21,14 @@ namespace PetClinic.Controllers
         public IActionResult AddOwner()
         {
             AddOwnerViewModel addOwnerViewModel = new AddOwnerViewModel();
-            return View(addOwnerViewModel);
+            return View("AddOwner", addOwnerViewModel);
         }
 
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> EditOwner(int id)
         {
             var owner = await ownerService.GetOwner(id);
-            return View(owner);
+            return View("EditOwner", owner);
         }
 
         [Authorize(Roles = "Admin,Vet")]
@@ -36,16 +36,20 @@ namespace PetClinic.Controllers
         {
             IList<OwnerViewModel> owners = new List<OwnerViewModel>();
             owners = await ownerService.GetAllOwners();
-            return View(owners);
+            return View("All", owners);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> AddOwner(AddOwnerViewModel addOwnerViewModel)
         {
+            if (addOwnerViewModel.Age <= 17)
+            {
+                ModelState.AddModelError(nameof(addOwnerViewModel.Age), "Не може да се създаде непълнолетен собственик.");
+            }
             if (!ModelState.IsValid)
             {
-                return View(addOwnerViewModel);
+                return View("AddOwner", addOwnerViewModel);
             }
 
             bool addedOwnerSuccessfully = await ownerService.AddOwner(addOwnerViewModel);
@@ -60,11 +64,15 @@ namespace PetClinic.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Vet")]
-        public async Task<IActionResult> EditPet(EditOwnerViewModel editOwnerViewModel)
+        public async Task<IActionResult> EditOwner(EditOwnerViewModel editOwnerViewModel)
         {
+            if (editOwnerViewModel.Age <= 17)
+            {
+                ModelState.AddModelError(nameof(editOwnerViewModel.Age), "Не може да редактирате годините, защото собственика е непълнолетен.");
+            }
             if (!ModelState.IsValid)
             {
-                return View(editOwnerViewModel);
+                return View("EditOwner", editOwnerViewModel);
             }
             bool editedOwnerSuccessfully = await ownerService.EditOwner(editOwnerViewModel);
 

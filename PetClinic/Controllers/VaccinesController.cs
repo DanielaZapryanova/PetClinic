@@ -35,6 +35,16 @@ namespace PetClinic.Controllers
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> Add(AddVaccineViewModel addVaccineViewModel)
         {
+            if ((addVaccineViewModel.DateOfExpiry - DateTime.Now).TotalDays <= 0)
+            {
+                ModelState.AddModelError(nameof(addVaccineViewModel.DateOfExpiry), "Не може да добавите ваксина с минал срок на годност.");
+            }
+
+            if (addVaccineViewModel.NumberInStock>=100)
+            {
+                ModelState.AddModelError(nameof(addVaccineViewModel.NumberInStock), "Не може да добавите ваксина, защото няма място в склада.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(addVaccineViewModel);

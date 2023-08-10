@@ -66,6 +66,10 @@ namespace PetClinic.Controllers
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> AddPet([FromForm(Name = "file")] IFormFile? file, AddPetViewModel addPetViewModel)
         {
+            if (addPetViewModel.DateOfBirth.CompareTo(DateTime.Now) > 0)
+            {
+                ModelState.AddModelError(nameof(addPetViewModel.DateOfBirth), "Не може да добавите животно, което още не се е родило.");
+            }
             if (!ModelState.IsValid)
             {
                 return View(addPetViewModel);
@@ -85,6 +89,11 @@ namespace PetClinic.Controllers
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> EditPet(EditPetViewModel editPetViewModel)
         {
+            if (editPetViewModel.DateOfBirth.CompareTo(DateTime.Now) > 0)
+            {
+                ModelState.AddModelError(nameof(editPetViewModel.DateOfBirth), "Не може да промените датата на раждане на животно, което още не се е родило.");
+            }
+
             if (!ModelState.IsValid)
             {
                 editPetViewModel.PossibleOwners= await GetPetOwners();
