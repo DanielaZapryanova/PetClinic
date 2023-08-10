@@ -75,6 +75,7 @@ namespace PetClinic.Services
                 Pet = visit.Pet.Name,
                 ReasonForVisit = visit.ReasonForVisit,
             }).ToListAsync();
+
             return visits;
         }
 

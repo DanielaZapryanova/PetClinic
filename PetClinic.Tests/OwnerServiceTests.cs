@@ -1,55 +1,58 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PetClinic.Data;
 using PetClinic.Data.Models;
+using PetClinic.Data;
 using PetClinic.Models;
 using PetClinic.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PetClinic.Contracts;
+using Moq;
+using PetClinic.Controllers;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 
 namespace PetClinic.Tests
 {
-    public class PetServiceTests
+    public class OwnerServiceTests
     {
         [Fact]
-        public async Task AddPetAddsPet()
+        public async Task AddOwnerAddsOwner()
         {
             var dbOptionsBuilder = new DbContextOptionsBuilder<PetClinic.Data.ApplicationDbContext>().UseInMemoryDatabase(databaseName: "petClinicDatabase");
+
+            IPetService petServiceMock = new Mock<IPetService>().Object;
 
             // Arrange db and fill it up
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // fix up some data
-                db.Set<Pet>().Add(new Pet()
+                db.Set<Owner>().Add(new Owner()
                 {
-                    Name = "Test pet",
-                    DateOfBirth = DateTime.Now,
-                    Breed = "Puppy",
-                    Color = "Green",
-                    Gender = "Female",
-                    Weight = 11,
-                    OwnerId = 0,
+                    FullName = "Owner 1",
+                    Address = "Owner 1 address",
+                    Age = 33,
+                    Telephone = "+359876543211",
                 });
                 await db.SaveChangesAsync();
             }
 
-            DateTime petDateOfBirth = DateTime.Now;
-
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // Create the service and the pet to add
-                var service = new PetService(db);
-                AddPetViewModel addPetViewModel = new AddPetViewModel()
+                var service = new OwnerService(db, petServiceMock);
+                AddOwnerViewModel addOwnerViewModel = new AddOwnerViewModel()
                 {
-                    Name = "test name 2",
-                    DateOfBirth = petDateOfBirth,
-                    Breed = "Shepherd",
-                    Gender = "Male",
-                    Color = "Blue",
-                    Weight = 34,
-                    OwnerId = 1,
+                    FullName = "Owner 2",
+                    Address = "Owner 2 address",
+                    Age = 33,
+                    Telephone = "+359876543212"
                 };
 
                 // Act
-                var result = await service.AddPet(addPetViewModel);
+                var result = await service.AddOwner(addOwnerViewModel);
 
                 // Assert
                 Assert.True(result);
@@ -59,63 +62,54 @@ namespace PetClinic.Tests
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
-                var pet = db.Set<Pet>().Where(pet => pet.Name.Equals("test name 2", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                if (pet == null)
+                var owner = db.Set<Owner>().Where(owner => owner.FullName.Equals("Owner 2", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                if (owner == null)
                 {
-                    throw new Exception("pet not saved in db successfully");
+                    throw new Exception("owner not saved in db successfully");
                 }
-                Assert.Equal("test name 2", pet.Name);
-                Assert.Equal(petDateOfBirth, pet.DateOfBirth);
-                Assert.Equal("Shepherd", pet.Breed);
-                Assert.Equal("Male", pet.Gender);
-                Assert.Equal("Blue", pet.Color);
-                Assert.Equal(34, pet.Weight);
-                Assert.Equal(1, pet.OwnerId);
+                Assert.Equal("Owner 2", owner.FullName);
+                Assert.Equal("Owner 2 address", owner.Address);
+                Assert.Equal(33, owner.Age);
+                Assert.Equal("+359876543212", owner.Telephone);
             }
         }
 
         [Fact]
-        public async Task EditPetEditsPet()
+        public async Task EditOwnerEditsOwner()
         {
             var dbOptionsBuilder = new DbContextOptionsBuilder<PetClinic.Data.ApplicationDbContext>().UseInMemoryDatabase(databaseName: "petClinicDatabase");
+            IPetService petServiceMock = new Mock<IPetService>().Object;
 
             // Arrange db and fill it up
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // fix up some data
-                db.Set<Pet>().Add(new Pet()
+                db.Set<Owner>().Add(new Owner()
                 {
-                    Name = "Test pet",
-                    DateOfBirth = DateTime.Now,
-                    Breed = "Puppy",
-                    Color = "Green",
-                    Gender = "Female",
-                    Weight = 11,
-                    OwnerId = 0,
+                    FullName = "Owner 1",
+                    Address = "Owner 1 address",
+                    Age = 33,
+                    Telephone = "+359876543211",
                 });
                 await db.SaveChangesAsync();
             }
 
-            DateTime petDateOfBirth = DateTime.Now;
-
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // Create the service and the pet to edit
-                var service = new PetService(db);
-                EditPetViewModel editPetViewModel = new EditPetViewModel()
+                var service = new OwnerService(db, petServiceMock);
+                EditOwnerViewModel editOwnerViewModel = new EditOwnerViewModel()
                 {
                     Id = 1,
-                    Name = "Test pet edited",
-                    DateOfBirth = petDateOfBirth,
-                    Breed = "Doggo",
-                    Color = "Red",
-                    Gender = "Female",
-                    Weight = 13,
-                    OwnerId = 16
+                    FullName = "Owner 2",
+                    Address = "Owner 2 address",
+                    Age = 33,
+                    Telephone = "+359876543212"
+
                 };
 
                 // Act
-                var result = await service.EditPet(editPetViewModel);
+                var result = await service.EditOwner(editOwnerViewModel);
 
                 // Assert
                 Assert.True(result);
@@ -125,52 +119,45 @@ namespace PetClinic.Tests
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
-                var pet = db.Set<Pet>().FirstOrDefault();
-                if (pet == null)
+                var owner = db.Set<Owner>().FirstOrDefault();
+                if (owner == null)
                 {
-                    throw new Exception("pet not saved in db successfully");
+                    throw new Exception("Owner not saved in db successfully");
                 }
-                Assert.Equal("Test pet edited", pet.Name);
-                Assert.Equal(petDateOfBirth, pet.DateOfBirth);
-                Assert.Equal("Doggo", pet.Breed);
-                Assert.Equal("Female", pet.Gender);
-                Assert.Equal("Red", pet.Color);
-                Assert.Equal(13, pet.Weight);
-                Assert.Equal(16, pet.OwnerId);
+                Assert.Equal("Owner 2", owner.FullName);
+                Assert.Equal("Owner 2 address", owner.Address);
+                Assert.Equal(33, owner.Age);
+                Assert.Equal("+359876543212", owner.Telephone);
             }
         }
 
         [Fact]
-        public async Task DeletePetDeletesPet()
+        public async Task DeleteOwnerDeletesOwner()
         {
             var dbOptionsBuilder = new DbContextOptionsBuilder<PetClinic.Data.ApplicationDbContext>().UseInMemoryDatabase(databaseName: "petClinicDatabase");
+            IPetService petServiceMock = new Mock<IPetService>().Object;
 
             // Arrange db and fill it up
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // fix up some data
-                db.Set<Pet>().Add(new Pet()
+                db.Set<Owner>().Add(new Owner()
                 {
-                    Name = "Test pet",
-                    DateOfBirth = DateTime.Now,
-                    Breed = "Puppy",
-                    Color = "Green",
-                    Gender = "Female",
-                    Weight = 11,
-                    OwnerId = 0,
+                    FullName = "Owner 1",
+                    Address = "Owner 1 address",
+                    Age = 33,
+                    Telephone = "+359876543211",
                 });
                 await db.SaveChangesAsync();
             }
 
-            DateTime petDateOfBirth = DateTime.Now;
-
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // Create the service and the pet to edit
-                var service = new PetService(db);
+                var service = new OwnerService(db,petServiceMock);
 
                 // Act
-                var result = await service.DeletePet(1);
+                var result = await service.DeleteOwner(1);
 
                 // Assert
                 Assert.True(result);
@@ -180,41 +167,22 @@ namespace PetClinic.Tests
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
-                var petCount = db.Set<Pet>().Count();
+                var ownerCount = db.Set<Owner>().Count();
 
-                Assert.Equal(0, petCount);
+                Assert.Equal(0, ownerCount);
             }
         }
 
         [Fact]
-        public async Task GetAllPetsGetsAllPets()
+        public async Task GetAllOwnersGetsAllOwners()
         {
             var dbOptionsBuilder = new DbContextOptionsBuilder<PetClinic.Data.ApplicationDbContext>().UseInMemoryDatabase(databaseName: "petClinicDatabase");
+            IPetService petServiceMock = new Mock<IPetService>().Object;
 
             // Arrange db and fill it up
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // fix up some data
-                db.Set<Pet>().Add(new Pet()
-                {
-                    Name = "Test pet",
-                    DateOfBirth = DateTime.Now,
-                    Breed = "Puppy",
-                    Color = "Green",
-                    Gender = "Female",
-                    Weight = 11,
-                    OwnerId = 1,
-                });
-                db.Set<Pet>().Add(new Pet()
-                {
-                    Name = "Test pet",
-                    DateOfBirth = DateTime.Now,
-                    Breed = "Puppy",
-                    Color = "Green",
-                    Gender = "Female",
-                    Weight = 11,
-                    OwnerId = 2,
-                });
                 db.Set<Owner>().Add(new Owner()
                 {
                     FullName = "Owner 1",
@@ -227,20 +195,19 @@ namespace PetClinic.Tests
                     FullName = "Owner 2",
                     Address = "Owner 2 address",
                     Age = 33,
-                    Telephone = "+359876543212",
+                    Telephone = "+359876543212"
                 });
+                
                 await db.SaveChangesAsync();
             }
-
-            DateTime petDateOfBirth = DateTime.Now;
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // Create the service and the pet to edit
-                var service = new PetService(db);
+                var service = new OwnerService(db, petServiceMock);
 
                 // Act
-                var result = await service.GetAllPets();
+                var result = await service.GetAllOwners();
 
                 // Assert
                 Assert.Equal(2, result.Count);
@@ -248,24 +215,15 @@ namespace PetClinic.Tests
         }
 
         [Fact]
-        public async Task GetPetsGetsPets()
+        public async Task GetOwnersGetsOwners()
         {
             var dbOptionsBuilder = new DbContextOptionsBuilder<PetClinic.Data.ApplicationDbContext>().UseInMemoryDatabase(databaseName: "petClinicDatabase");
+            IPetService petServiceMock = new Mock<IPetService>().Object;
 
             // Arrange db and fill it up
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // fix up some data
-                db.Set<Pet>().Add(new Pet()
-                {
-                    Name = "Test pet",
-                    DateOfBirth = DateTime.Now,
-                    Breed = "Puppy",
-                    Color = "Green",
-                    Gender = "Female",
-                    Weight = 11,
-                    OwnerId = 1,
-                });
                 db.Set<Owner>().Add(new Owner()
                 {
                     FullName = "Owner 1",
@@ -273,19 +231,17 @@ namespace PetClinic.Tests
                     Age = 33,
                     Telephone = "+359876543211",
                 });
-              
+
                 await db.SaveChangesAsync();
             }
-
-            DateTime petDateOfBirth = DateTime.Now;
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // Create the service and the pet to edit
-                var service = new PetService(db);
+                var service = new OwnerService(db, petServiceMock);
 
                 // Act
-                var result = await service.GetPet(1);
+                var result = await service.GetOwner(1);
 
                 // Assert
                 var owner = db.Set<Owner>().FirstOrDefault();

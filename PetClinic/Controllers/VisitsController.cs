@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PetClinic.Contracts;
 using PetClinic.Models;
-using PetClinic.Services;
-using System.Data;
 
 namespace PetClinic.Controllers
 {
@@ -24,14 +22,14 @@ namespace PetClinic.Controllers
         public async Task<IActionResult> AllVisit()
         {
             IList<VisitViewModel> visits = await visitsService.AllVisit();
-            return View(visits);
+            return View("AllVisit", visits);
         }
 
         [Authorize(Roles = "Admin,Vet")]
         public async Task<IActionResult> Visits(int id)
         {
             IList<VisitViewModel> visits = await visitsService.Visits(id);
-            return View(visits);
+            return View("Visits", visits);
         }
 
         [HttpPost]
@@ -45,7 +43,7 @@ namespace PetClinic.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(addVisitViewModel);
+                return View("AddVisit", addVisitViewModel);
             }
 
             bool addedVisitSuccessfully = await visitsService.AddVisit(addVisitViewModel);
@@ -66,7 +64,7 @@ namespace PetClinic.Controllers
             addVisitViewModel.PossibleVets = await vetService.GetAllActiveVets();
             addVisitViewModel.PossiblePets = await petService.GetAllPets();
             addVisitViewModel.Date = DateTime.Today;
-            return View(addVisitViewModel);
+            return View("AddVisit", addVisitViewModel);
         }
 
         [Authorize(Roles = "Admin,Vet")]
@@ -77,7 +75,7 @@ namespace PetClinic.Controllers
             addVaccinationViewModel.PossibleVets = await vetService.GetAllActiveVets();
             addVaccinationViewModel.PossiblePets = await petService.GetAllPets();
             addVaccinationViewModel.Date = DateTime.Today;
-            return View(addVaccinationViewModel);
+            return View("AddVaccination", addVaccinationViewModel);
         }
 
         [HttpPost]
