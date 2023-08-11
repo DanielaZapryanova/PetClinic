@@ -41,7 +41,6 @@ namespace PetClinic.Controllers
             return View(vet);
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> All()
         {
             IList<VeterinarianViewModel> vets = new List<VeterinarianViewModel>();
