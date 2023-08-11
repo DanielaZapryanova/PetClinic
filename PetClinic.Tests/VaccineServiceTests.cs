@@ -31,8 +31,6 @@ namespace PetClinic.Tests
                 await db.SaveChangesAsync();
             }
 
-            DateTime petDateOfBirth = DateTime.Now;
-
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
                 // Create the service and the pet to add
@@ -76,8 +74,6 @@ namespace PetClinic.Tests
                 });
                 await db.SaveChangesAsync();
             }
-
-            DateTime petDateOfBirth = DateTime.Now;
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {

@@ -58,7 +58,7 @@ namespace PetClinic.Tests
                 Assert.True(result);
             }
 
-            // Assert the added pet has correct properties
+            // Assert the added owner has correct properties
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
@@ -96,7 +96,7 @@ namespace PetClinic.Tests
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
-                // Create the service and the pet to edit
+                // Create the service and the owner to edit
                 var service = new OwnerService(db, petServiceMock);
                 EditOwnerViewModel editOwnerViewModel = new EditOwnerViewModel()
                 {
@@ -115,7 +115,7 @@ namespace PetClinic.Tests
                 Assert.True(result);
             }
 
-            // Assert the edited pet has correct properties
+            // Assert the edited owner has correct properties
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
@@ -163,7 +163,7 @@ namespace PetClinic.Tests
                 Assert.True(result);
             }
 
-            // Assert the edited pet has correct properties
+            // Assert the edited owner has correct properties
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
@@ -203,7 +203,7 @@ namespace PetClinic.Tests
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
-                // Create the service and the pet to edit
+                // Create the service and the owner to edit
                 var service = new OwnerService(db, petServiceMock);
 
                 // Act
@@ -237,7 +237,7 @@ namespace PetClinic.Tests
 
             using (var db = new ApplicationDbContext(dbOptionsBuilder.Options))
             {
-                // Create the service and the pet to edit
+                // Create the service and the owner to edit
                 var service = new OwnerService(db, petServiceMock);
 
                 // Act
